@@ -1,0 +1,16 @@
+<form>
+    <div [hidden]="ajout">
+        <label>Album ID</label>
+        <input type="text" [readonly]="!ajout" [(ngModel)]="album.idAlb" name="idAlbum" class="form-control w-25">
+    </div>
+    <div>
+        <label>Album's name</label>
+        <input type="text" [(ngModel)]="album.nomAlb" name="nomAlbum" class="form-control"
+            placeholder="Type the name of the album...">
+    </div>
+    <div class="mt-2">
+        <button type="submit" [disabled]="!album.nomAlb" class="btn btn-success"
+            (click)="saveAlbum()" >{{ajout ? 'Add' : 'Modify'}}
+        </button>
+    </div>
+</form>

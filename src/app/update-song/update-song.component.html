@@ -1,0 +1,35 @@
+<div class="container">
+    <div>
+        <h2>Modify a song:</h2>
+    </div>
+    <form>
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <label>Song ID</label>
+            <input readonly type="text" [(ngModel)]="currentSong.idSong" name="idSong" class="form-control">
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <label>Songname</label>
+            <input type="text" [(ngModel)]="currentSong.nomSong" name="nomSong" class="form-control">
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <label>Song duration</label>
+            <input type="number" [(ngModel)]="currentSong.timeSong" name="timeSong" class="form-control">
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <label>creation date</label>
+            <input type="date" [ngModel]="currentSong.dateCreation | date: 'yyyy-MM-dd'"
+                (ngModelChange)=" currentSong.dateCreation= $event" name="dateCreation" class="form-control">
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <label>Album</label>
+            <select class="form-control form-control-lg" id="idAlb" name="idAlb" [(ngModel)]="updatedAlbId">
+                <option *ngFor="let alb of albums" [value]="alb.idAlb">
+                    {{alb.nomAlb}}
+                </option>
+            </select>
+        </div>
+        <div class="mt-2">
+            <button type="submit" (click)="updateSong()" class="btn btn-success">Modify</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+<div class="container">
+
+
+    <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2 mt-2 ">
+            <label>Song Name when typing</label>
+            <input #nom [(ngModel)]="searchTerm" name="searchTerm" class="form-control">
+        </div>
+    </form>
+
+    <!-- <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2 mt-2 ">
+            <label>Song Name when typing</label>
+            <input class="form-control" #searchTerm (keyup)="onKeyUp(searchTerm.value)">
+        </div>
+    </form> -->
+
+    <!-- <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2 mt-2 ">
+            <label>Song name</label>
+            <input type="text" class="form-control" [(ngModel)]="nomSong" name="nomSong" class="form-control">
+            <button type="submit" (click)="rechercherSons()" class="btn btn-primary mb-2 ml-2">Search</button>
+        </div>
+    </form> -->
+
+    
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Duration</th>
+                        <th>Creation date</th>
+                        <th>Album</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let song of songs | searchFilter: searchTerm ">
+                    <tr>
+                        <td>{{song.idSong}}</td>
+                        <td>{{song.nomSong}}</td>
+                        <td>{{song.timeSong}}</td>
+                        <td>{{song.dateCreation | date:'dd/MM/yyyy'}}</td>
+                        <td>{{song.album!.nomAlb}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

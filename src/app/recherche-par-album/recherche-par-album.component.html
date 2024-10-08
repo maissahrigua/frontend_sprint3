@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="col-sm-4 col-md-4 col-lg-4 mb-4">
+        <label>Albums </label>
+        <select class="form-control form-control-lg" id="idAlb" name="idAlb" [(ngModel)]="IdAlbum" (change)="onChange()">
+        <option *ngFor="let alb of albums" value="{{alb.idAlb}}">
+        {{alb.nomAlb}}
+         </option>
+        </select>
+        </div>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Duration</th>
+                    <th>Creation date</th>
+                    <th>Album</th>
+                </tr>
+                <tbody *ngFor="let song of songs">
+                    <tr>
+                        <td>{{song.idSong}}</td>
+                        <td>{{song.nomSong}}</td>
+                        <td>{{song.timeSong}}</td>
+                        <td>{{song.dateCreation | date:'dd/MM/yyyy'}}</td>
+                        <td>{{song.album!.nomAlb}}</td>
+                        <!-- <td><a class="btn btn-success" [routerLink]="['/updateSong',song.idSong]">Modify</a></td>
+                        <td><a class="btn btn-danger" (click)="supprimerSong(song)">Delete</a></td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

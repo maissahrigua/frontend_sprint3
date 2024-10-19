@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { apiURL } from '../config';
 import { AlbumWrapper } from '../model/albumWrapped.model';
+import { AuthService } from './auth.service';
 
 const httpOptions = {headers: new HttpHeaders( {'Content-Type': 'application/json'} )};
 
@@ -13,7 +14,7 @@ const httpOptions = {headers: new HttpHeaders( {'Content-Type': 'application/jso
 })
 export class SongService {
 
-  apiURLAlb: string = 'http://localhost:53843/songs/alb';
+  apiURLAlb: string = 'http://localhost:51627/songs/alb';
 
  // albums : Album[];
 
@@ -21,7 +22,8 @@ export class SongService {
 
   song! : Song;
 
-  constructor(private http : HttpClient) {
+  constructor(private http : HttpClient,
+    private authService : AuthService) {
     /* this.albums = [ {idAlb : 1, nomAlb : "Red"},
       {idAlb : 2, nomAlb : "Lover"}]; */
     /*this.songs = [
@@ -31,22 +33,31 @@ export class SongService {
     ];*/
     }
 
-  listeSong(): Observable<Song[]>{
-    return this.http.get<Song[]>(apiURL);
+  listeSong(): Observable<Song[]> {
+    return this.http.get<Song[]>(apiURL+"/all");
   }
     
-  ajouterSong( son: Song):Observable<Song>{
-    return this.http.post<Song>(apiURL, son, httpOptions);
+  ajouterSong(son: Song): Observable<Song> {
+    let jwt = this.authService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.post<Song>(apiURL + "/addprod", son, { headers: httpHeaders });
   }
 
   supprimerSong(id : number) {
-    const url = `${apiURL}/${id}`;
-    return this.http.delete(url, httpOptions);
+    const url = `${apiURL}/delson/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.delete(url, { headers: httpHeaders });
   }
 
   consulterSong(id: number): Observable<Song> {
-    const url = `${apiURL}/${id}`;
-    return this.http.get<Song>(url);
+    const url = `${apiURL}/getbyid/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = "Bearer "+jwt;
+    let httpHeaders = new HttpHeaders({"Authorization":jwt})
+    return this.http.get<Song>(url,{headers:httpHeaders});
   }
 
   trierSongs(){
@@ -64,11 +75,19 @@ export class SongService {
 
   updateSong(son :Song) : Observable<Song>
   {
-    return this.http.put<Song>(apiURL, son, httpOptions);
+    let jwt = this.authService.getToken();
+    jwt = "Bearer "+jwt;
+    let httpHeaders = new HttpHeaders({"Authorization":jwt})
+    return this.http.put<Song>(apiURL+"/updateson", son, {headers:httpHeaders});
   }
 
-  listeAlbums():Observable<AlbumWrapper>{
-    return this.http.get<AlbumWrapper>(this.apiURLAlb);
+  listeAlbums(): Observable<AlbumWrapper> {
+    let jwt = this.authService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.get<AlbumWrapper>(this.apiURLAlb, { headers: httpHeaders }
+    );
+
   }
 
   /*consulterAlbum(id:number): Album{
@@ -76,7 +95,7 @@ export class SongService {
   } */
       
   rechercherParAlbum(idAlb: number):Observable< Song[]> {
-    const url = `${apiURL}/sonsalb/${idAlb}`;
+    const url = `${apiURL}/prodscat/${idAlb}`;
     return this.http.get<Song[]>(url);
   }
 

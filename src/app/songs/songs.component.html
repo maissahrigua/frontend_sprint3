@@ -8,6 +8,7 @@
                     <th>Duration</th>
                     <th>Creation date</th>
                     <th>Album</th>
+                    <th>Image</th>
                 </tr>
                 <tbody *ngFor="let song of songs">
                     <tr>
@@ -16,6 +17,10 @@
                         <td>{{song.timeSong}}</td>
                         <td>{{song.dateCreation | date:'dd/MM/yyyy'}}</td>
                         <td>{{song.album!.nomAlb}}</td>
+                        <td><img class="card-img-top img-responsive"
+                            src="{{apiurl+'/image/loadfromFS/'+song.idSong}}"
+                            style = "height :50px;width:100px">
+                        </td>
                         <td><a *ngIf="authService.isAdmin()" class="btn btn-danger" (click)="supprimerSong(song)">Delete</a></td>
                             <td><a *ngIf="authService.isAdmin()" class="btn btn-success" [routerLink]="['/updateSong',song.idSong]">Modify</a></td>
                     </tr>

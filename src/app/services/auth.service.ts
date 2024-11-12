@@ -18,7 +18,10 @@ export class AuthService {
   public roles!: string[];
   private helper = new JwtHelperService();
 
-  apiURL: string = 'http://localhost:51304/users';
+  public regitredUser : User = new User();
+
+
+  apiURL: string = 'http://localhost:8081/users';
   token!:string;
 
   constructor(private router: Router,
@@ -99,4 +102,21 @@ export class AuthService {
       }
     });
   } */
+
+  registerUser(user :User){
+    return this.http.post<User>(this.apiURL+'/register', user,
+    {observe:'response'});
+  }
+
+  setRegistredUser(user : User){
+    this.regitredUser=user;
+  }
+
+  getRegistredUser(){
+    return this.regitredUser;
+  }
+
+  validateEmail(code : string){
+    return this.http.get<User>(this.apiURL+'/verifyEmail/'+code);
+  }
 }

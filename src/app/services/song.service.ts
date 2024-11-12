@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { apiURL } from '../config';
 import { AlbumWrapper } from '../model/albumWrapped.model';
 import { AuthService } from './auth.service';
+import { Image } from '../model/image.model';
 
 const httpOptions = {headers: new HttpHeaders( {'Content-Type': 'application/json'} )};
 
@@ -14,7 +15,7 @@ const httpOptions = {headers: new HttpHeaders( {'Content-Type': 'application/jso
 })
 export class SongService {
 
-  apiURLAlb: string = 'http://localhost:51627/songs/alb';
+  apiURLAlb: string = 'http://localhost:8080/songs/alb';
 
  // albums : Album[];
 
@@ -41,7 +42,7 @@ export class SongService {
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.post<Song>(apiURL + "/addprod", son, { headers: httpHeaders });
+    return this.http.post<Song>(apiURL + "/addson", son, { headers: httpHeaders });
   }
 
   supprimerSong(id : number) {
@@ -95,7 +96,7 @@ export class SongService {
   } */
       
   rechercherParAlbum(idAlb: number):Observable< Song[]> {
-    const url = `${apiURL}/prodscat/${idAlb}`;
+    const url = `${apiURL}/sonsalb/${idAlb}`;
     return this.http.get<Song[]>(url);
   }
 
@@ -108,4 +109,36 @@ export class SongService {
   ajouterAlbum( alb: Album):Observable<Album>{
     return this.http.post<Album>(this.apiURLAlb, alb, httpOptions);
   }
+
+  uploadImage(file: File, filename: string): Observable<Image>{
+    const imageFormData = new FormData();
+    imageFormData.append('image', file, filename);
+    const url = `${apiURL + '/image/upload'}`;
+    return this.http.post<Image>(url, imageFormData);
+  }
+
+
+    loadImage(id: number): Observable<Image> {
+      const url = `${apiURL + '/image/get/info'}/${id}`;
+      return this.http.get<Image>(url);
+    }
+
+    uploadImageSon(file: File, filename: string, idSon:number): Observable<any>{
+      const imageFormData = new FormData();
+      imageFormData.append('image', file, filename);
+      const url = `${apiURL + '/image/uplaodImageSon'}/${idSon}`;
+      return this.http.post(url, imageFormData);
+   }
+
+    supprimerImage(id : number) {
+      const url = `${apiURL}/image/delete/${id}`;
+      return this.http.delete(url, httpOptions);
+    }
+
+    uploadImageFS(file: File, filename: string, idSon : number): Observable<any>{
+      const imageFormData = new FormData();
+      imageFormData.append('image', file, filename);
+      const url = `${apiURL + '/image/uploadFS'}/${idSon}`;
+      return this.http.post(url, imageFormData);
+    }
 }

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   user = new User();
+  message : string = "login ou mot de passe erronés..";
 
   //erreur=0;
 
@@ -27,8 +28,10 @@ export class LoginComponent implements OnInit {
         this.authService.saveToken(jwToken);
         this.router.navigate(['/']);
       },
-      error: (err: any) => {
+      error: (err) => {
         this.err = 1;
+        if (err.error.errorCause == 'disabled')
+          this.message = "Utilisateur désactivé, Veuillez contacter votre Administrateur";
       }
     });
   }

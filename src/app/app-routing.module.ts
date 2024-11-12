@@ -9,6 +9,8 @@ import { ListeAlbumsComponent } from './liste-albums/liste-albums.component';
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { SongGuard } from './song.guard';
+import { RegisterComponent } from './register/register.component';
+import { VerifEmailComponent } from './verif-email/verif-email.component';
 
 const routes: Routes = [
   {path: "songs", component : SongsComponent},
@@ -17,7 +19,9 @@ const routes: Routes = [
   {path: "rechercheParAlbum", component : RechercheParAlbumComponent},
   {path: "rechercheParNom", component : RechercheParNomComponent},
   {path: "listeAlbums", component : ListeAlbumsComponent},
+  {path:'register',component:RegisterComponent},
   {path: 'login', component: LoginComponent},
+  { path: 'verifEmail', component: VerifEmailComponent },
   {path: 'app-forbidden', component: ForbiddenComponent},
   { path: "", redirectTo: "songs", pathMatch: "full" }
 ];

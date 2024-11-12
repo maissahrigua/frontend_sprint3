@@ -3,6 +3,7 @@ import { Song } from '../model/song.model';
 import { SongService } from '../services/song.service';
 import { Album } from '../model/album.model';
 import { Router } from '@angular/router';
+import { Image } from '../model/image.model';
 
 @Component({
   selector: 'app-add-song',
@@ -13,6 +14,9 @@ export class AddSongComponent implements OnInit{
   albums! : Album[];
   newIdAlb! : number;
   newAlbum! : Album;
+
+  uploadedImage!: File;
+  imagePath: any;
 
   newSong = new Song();
 
@@ -28,12 +32,25 @@ export class AddSongComponent implements OnInit{
     );
   }
 
-  addSong(){
+  addSong() {
     this.newSong.album = this.albums.find(alb => alb.idAlb == this.newIdAlb)!;
-    this.songService.ajouterSong(this.newSong)
-    .subscribe(son => {
-    console.log(son);
-    this.router.navigate(['songs']);
-    });
+    this.songService
+      .ajouterSong(this.newSong)
+      .subscribe((son) => {
+        this.songService
+          .uploadImageFS(this.uploadedImage,
+            this.uploadedImage.name, son.idSong)
+          .subscribe((response: any) => { }
+          );
+        this.router.navigate(['songs']);
+      }
+    );
+  }
+
+  onImageUpload(event: any) {
+    this.uploadedImage = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(this.uploadedImage);
+    reader.onload = (_event) => { this.imagePath = reader.result; }
   }
 }
